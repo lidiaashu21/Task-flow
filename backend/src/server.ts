@@ -7,25 +7,37 @@ import { initSocketServer } from "./realtime/socket.js";
 
 async function start(): Promise<void> {
   try {
-    await client`select 1`;
+    // Verify database connection before starting the API.
+    await client`SELECT 1`;
 
     logger.info("Database connection established");
+
+    const httpServer = createServer(app);
+
+    // Initialize Socket.IO on the same HTTP server.
+    initSocketServer(httpServer);
+
+    // Render requires the server to listen on 0.0.0.0.
+    httpServer.listen(env.PORT, "0.0.0.0", () => {
+      logger.info(`TaskFlow API started successfully on port ${env.PORT}`);
+      logger.info(`Health check available at /health`);
+      logger.info("Socket.IO listening on the same port");
+    });
+
+    httpServer.on("error", (error) => {
+      logger.error("HTTP server failed to start", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+
+      process.exit(1);
+    });
   } catch (error) {
-    logger.error("Failed to connect to the database", {
-      error: (error as Error).message,
+    logger.error("Failed to start TaskFlow server", {
+      error: error instanceof Error ? error.message : String(error),
     });
 
     process.exit(1);
   }
-
-  const httpServer = createServer(app);
-  initSocketServer(httpServer);
-
-  httpServer.listen(env.PORT, () => {
-    logger.info(`TaskFlow API started successfully on port ${env.PORT}`);
-    logger.info(`Health check: http://localhost:${env.PORT}/health`);
-    logger.info(`Socket.IO listening on the same port`);
-  });
 }
 
 start();
