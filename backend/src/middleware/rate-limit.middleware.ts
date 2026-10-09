@@ -15,8 +15,7 @@ export const apiRateLimiter = rateLimit({
 });
 
 /**
- * Tighter limit for credential- and email-sending endpoints (login, register, password reset,
- * resend-verification) — the actual brute-force/spam surface, so it gets a stricter budget
+ * Tighter limit for credential- and email-sending endpoints (login, register, password reset) — the actual brute-force/spam surface, so it gets a stricter budget
  * than the rest of the API.
  */
 export const authRateLimiter = rateLimit({

@@ -41,7 +41,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <QueryProvider>{children}</QueryProvider>
-        <Toaster richColors closeButton position="top-center" />
+        <Toaster
+          closeButton
+          position="top-center"
+          toastOptions={{ style: { background: "#4F46E5", color: "#fff", border: "1px solid #4F46E5" } }}
+        />
         <ServiceWorkerRegistration />
       </body>
     </html>

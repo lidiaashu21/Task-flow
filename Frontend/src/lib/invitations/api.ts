@@ -28,13 +28,6 @@ export function listInvitations(
   });
 }
 
-/**
- * Create an invitation.
- * Requires authentication.
- *
- * The projectId determines which project the user
- * will be invited to.
- */
 export function createInvitation(
   fetcher: Fetcher,
   projectId: string,
@@ -51,10 +44,6 @@ export function createInvitation(
   );
 }
 
-/**
- * Resend an invitation.
- * Requires authentication.
- */
 export function resendInvitation(
   fetcher: Fetcher,
   projectId: string,
@@ -85,29 +74,6 @@ export function revokeInvitation(
   );
 }
 
-/**
- * Preview a public invitation.
- *
- * IMPORTANT:
- * This endpoint does NOT require an access token.
- *
- * The invitation token itself identifies the invitation.
- *
- * The backend returns:
- *
- * {
- *   success: true,
- *   data: {
- *     invitation: {
- *       projectName: "...",
- *       invitedByName: "...",
- *       email: "...",
- *       status: "pending",
- *       isExpired: false
- *     }
- *   }
- * }
- */
 export async function previewInvitation(
   token: string,
 ): Promise<{ invitation: InvitationPreview }> {

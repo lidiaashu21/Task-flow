@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { AlarmClock, CheckCircle2, Circle, ListChecks, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 import { toast } from "sonner";
@@ -17,6 +18,8 @@ import { deleteProject, getProject, leaveProject } from "@/lib/projects/api";
 import { getTaskDashboard } from "@/lib/tasks/api";
 import { priorityBadgeVariant, priorityLabels, statusLabels } from "@/lib/tasks/display";
 import { formatDate } from "@/lib/format";
+
+const statusIcons = { todo: Circle, in_progress: Loader, done: CheckCircle2 } as const;
 
 export default function ProjectOverviewPage({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = use(params);
@@ -109,14 +112,23 @@ export default function ProjectOverviewPage({ params }: { params: Promise<{ proj
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Card>
           <CardBody>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">Total tasks</p>
+            <p className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+              <ListChecks className="h-5 w-5 text-blue-600" aria-hidden="true" />
+              Total tasks
+            </p>
             <p className="mt-1 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{dashboard?.totalTasks ?? "—"}</p>
           </CardBody>
         </Card>
         {(["todo", "in_progress", "done"] as const).map((status) => (
           <Card key={status}>
             <CardBody>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">{statusLabels[status]}</p>
+              <p className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+                {(() => {
+                  const StatusIcon = statusIcons[status];
+                  return <StatusIcon className="h-5 w-5 text-blue-600" aria-hidden="true" />;
+                })()}
+                {statusLabels[status]}
+              </p>
               <p className="mt-1 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
                 {dashboard?.statusCounts[status] ?? "—"}
               </p>
@@ -127,7 +139,10 @@ export default function ProjectOverviewPage({ params }: { params: Promise<{ proj
 
       <Card>
         <CardBody>
-          <h2 className="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-50">Your overdue tasks</h2>
+          <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+            <AlarmClock className="h-5 w-5 text-blue-600" aria-hidden="true" />
+            Your overdue tasks
+          </h2>
           {!dashboard?.myOverdueTasks.length ? (
             <p className="text-sm text-zinc-500 dark:text-zinc-400">Nothing overdue — you&apos;re all caught up.</p>
           ) : (

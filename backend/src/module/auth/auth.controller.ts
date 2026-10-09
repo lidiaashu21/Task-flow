@@ -14,9 +14,7 @@ import type {
   GoogleCallbackQuery,
   LoginInput,
   RegisterInput,
-  ResendVerificationInput,
   ResetPasswordInput,
-  VerifyEmailInput,
 } from "./auth.schema.js";
 
 const OAUTH_STATE_COOKIE = "taskflow_oauth_state";
@@ -66,17 +64,6 @@ export const authController = {
     const user = await authRepository.findUserById(req.user!.id);
     if (!user) throw AppError.unauthorized("Account no longer exists");
     sendSuccess(res, { user: toPublicUser(user) });
-  }),
-
-  verifyEmail: asyncHandler(async (req: Request, res: Response) => {
-    const { token } = req.query as unknown as VerifyEmailInput;
-    const user = await authService.verifyEmail(token);
-    sendSuccess(res, { user });
-  }),
-
-  resendVerification: asyncHandler(async (req: Request, res: Response) => {
-    await authService.resendVerification(req.body as ResendVerificationInput);
-    sendSuccess(res, { message: "If that account exists, a new verification email has been sent." });
   }),
 
   forgotPassword: asyncHandler(async (req: Request, res: Response) => {

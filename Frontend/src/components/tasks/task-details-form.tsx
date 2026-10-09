@@ -120,7 +120,7 @@ export function TaskDetailsForm({ task, members }: { task: PublicTask; members: 
         <Field id="task-detail-assignee" label="Assignee">
           <Select id="task-detail-assignee" {...register("assigneeId")}>
             <option value="">Unassigned</option>
-            {members.map((member) => (
+            {members.filter((member) => member.role !== "owner" || member.id === task.assignee?.id).map((member) => (
               <option key={member.id} value={member.id}>
                 {member.name}
               </option>

@@ -26,7 +26,6 @@ const envSchema = z.object({
   SMTP_PASS: z.string().optional(),
   SMTP_FROM: z.string().default("TaskFlow <no-reply@taskflow.dev>"),
 
-  EMAIL_VERIFICATION_EXPIRES_IN_HOURS: z.coerce.number().int().positive().default(24),
   PASSWORD_RESET_EXPIRES_IN_MINUTES: z.coerce.number().int().positive().default(30),
   INVITATION_EXPIRES_IN_DAYS: z.coerce.number().int().positive().default(7),
 });

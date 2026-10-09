@@ -28,11 +28,6 @@ export const forgotPasswordFormSchema = z.object({
 });
 export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordFormSchema>;
 
-export const resendVerificationFormSchema = z.object({
-  email: emailField,
-});
-export type ResendVerificationFormValues = z.infer<typeof resendVerificationFormSchema>;
-
 export const resetPasswordFormSchema = z
   .object({
     password: passwordField,

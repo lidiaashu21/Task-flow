@@ -23,14 +23,6 @@ export function getCurrentUser(token: string): Promise<{ user: PublicUser }> {
   return apiFetch<{ user: PublicUser }>("/auth/me", { token });
 }
 
-export function verifyEmail(token: string): Promise<{ user: PublicUser }> {
-  return apiFetch<{ user: PublicUser }>("/auth/verify-email", { query: { token } });
-}
-
-export function resendVerification(email: string): Promise<{ message: string }> {
-  return apiFetch<{ message: string }>("/auth/resend-verification", { method: "POST", body: { email } });
-}
-
 export function forgotPassword(email: string): Promise<{ message: string }> {
   return apiFetch<{ message: string }>("/auth/forgot-password", { method: "POST", body: { email } });
 }

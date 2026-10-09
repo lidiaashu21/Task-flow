@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { FolderKanban, Plus } from "lucide-react";
+import { Crown, FolderKanban, ListChecks, type LucideIcon, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -52,9 +52,10 @@ export default function DashboardOverviewPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard label="Projects" value={projects?.length ?? 0} />
-        <StatCard label="Total tasks" value={totalTasks} />
+        <StatCard icon={FolderKanban} label="Projects" value={projects?.length ?? 0} />
+        <StatCard icon={ListChecks} label="Total tasks" value={totalTasks} />
         <StatCard
+          icon={Crown}
           label="Owned projects"
           value={projects?.filter((p) => p.myRole === "owner").length ?? 0}
         />
@@ -108,10 +109,13 @@ export default function DashboardOverviewPage() {
   );
 }
 
-function StatCard({ label, value }: { label: string; value: number }) {
+function StatCard({ icon: Icon, label, value }: { icon: LucideIcon; label: string; value: number }) {
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950">
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">{label}</p>
+    <div className="solid-white rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950">
+      <p className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+        <Icon className="h-5 w-5 text-blue-600" aria-hidden="true" />
+        {label}
+      </p>
       <p className="mt-1 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
         {value}
       </p>

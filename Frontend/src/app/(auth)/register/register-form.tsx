@@ -42,13 +42,8 @@ export function RegisterForm() {
     try {
       const session = await registerAccount({ name: values.name, email: values.email, password: values.password });
       saveAccessToken(session.accessToken);
-      if (next) {
-        toast.success("Account created! You're signed in.");
-        router.push(next);
-        return;
-      }
-      toast.success("Account created! Check your inbox to verify your email.");
-      router.push(`/verify-email?email=${encodeURIComponent(session.user.email)}`);
+      toast.success("Account created! You're signed in.");
+      router.push(next ?? "/");
     } catch (error) {
       if (error instanceof ApiError) {
         const handled = applyFieldErrors(error, setError);

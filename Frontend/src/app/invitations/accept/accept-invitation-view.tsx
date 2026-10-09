@@ -36,12 +36,11 @@ function InvitationDetails({ preview }: { preview: InvitationPreview }) {
           <p className="text-muted-foreground">Project</p>
           <p className="font-semibold">{preview.projectName}</p>
         </div>
-
+        z
         <div>
           <p className="text-muted-foreground">Invited by</p>
           <p className="font-semibold">{preview.invitedByName}</p>
         </div>
-
         <div>
           <p className="text-muted-foreground">Invitation sent to</p>
           <p className="font-semibold break-all">{preview.email}</p>

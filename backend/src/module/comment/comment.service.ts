@@ -1,4 +1,5 @@
 import { commentRepository } from "./comment.repository.js";
+import { notificationService } from "../notification/notification.service.js";
 import { AppError } from "../../shared/error/app-error.js";
 import { getPagination, buildPaginationMeta, type PaginationMeta } from "../../shared/utils/pagination.js";
 import {
@@ -44,10 +45,19 @@ export const commentService = {
   // ---- Task comments ----
 
   async create(taskId: string, userId: string, body: string): Promise<PublicComment> {
-    await assertTaskCommentAccess(taskId, userId);
+    const task = await assertTaskCommentAccess(taskId, userId);
 
     const created = await commentRepository.createComment({ taskId, authorId: userId, body });
     const comment = await commentRepository.findCommentWithAuthor(created.id);
+
+    const project = await commentRepository.findProjectById(task.projectId);
+    const authorName = await notificationService.actorName(userId);
+    await notificationService.notify([project?.ownerId, task.assigneeId], userId, {
+      type: "comment_added",
+      title: "New comment",
+      body: `${authorName} commented on "${task.title}"`,
+      link: `/tasks/${taskId}`,
+    });
     return toPublicComment(comment!);
   },
 
@@ -105,10 +115,17 @@ export const commentService = {
   // ---- Project comments (a discussion thread scoped to the whole project) ----
 
   async createProjectComment(projectId: string, userId: string, body: string): Promise<PublicProjectComment> {
-    await assertProjectMember(projectId, userId);
+    const project = await assertProjectMember(projectId, userId);
 
     const created = await commentRepository.createProjectComment({ projectId, authorId: userId, body });
     const comment = await commentRepository.findProjectCommentWithAuthor(created.id);
+    const authorName = await notificationService.actorName(userId);
+    await notificationService.notify([project.ownerId], userId, {
+      type: "comment_added",
+      title: "New project comment",
+      body: `${authorName} commented in "${project.name}"`,
+      link: `/projects/${projectId}`,
+    });
     return toPublicProjectComment(comment!);
   },
 

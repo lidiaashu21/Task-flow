@@ -3,7 +3,6 @@ import { db } from "../../db/index.js";
 
 import { users, type NewUser, type User } from "../../db/schema/user.js";
 import { authIdentities } from "../../db/schema/auth-identitie.js";
-import { emailVerificationTokens } from "../../db/schema/email-verification.js";
 import { passwordResetTokens } from "../../db/schema/password-reset.js";
 import { sessions } from "../../db/schema/session.js";
 
@@ -33,33 +32,6 @@ export const authRepository = {
       .update(users)
       .set({ passwordHash, updatedAt: new Date() })
       .where(eq(users.id, userId));
-  },
-
-  async createEmailVerificationToken(
-    userId: string,
-    tokenHash: string,
-    expiresAt: Date,
-  ): Promise<void> {
-    await db
-      .insert(emailVerificationTokens)
-      .values({ userId, tokenHash, expiresAt });
-  },
-
-  findValidEmailVerificationToken(tokenHash: string) {
-    return db.query.emailVerificationTokens.findFirst({
-      where: and(
-        eq(emailVerificationTokens.tokenHash, tokenHash),
-        isNull(emailVerificationTokens.consumedAt),
-        gt(emailVerificationTokens.expiresAt, new Date()),
-      ),
-    });
-  },
-
-  async consumeEmailVerificationToken(id: string): Promise<void> {
-    await db
-      .update(emailVerificationTokens)
-      .set({ consumedAt: new Date() })
-      .where(eq(emailVerificationTokens.id, id));
   },
 
   async createPasswordResetToken(

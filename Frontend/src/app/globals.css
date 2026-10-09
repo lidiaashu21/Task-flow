@@ -1,8 +1,62 @@
 @import "tailwindcss";
 
+/* Light theme only: the `dark:` variants only apply under a `.dark` class, which is never set. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  color-scheme: light;
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #4f46e5;
+}
+
+/* Brand: the blue scale is remapped to the TaskFlow primary (#4F46E5 at 600). */
+@theme {
+  --color-blue-50: #eef2ff;
+  --color-blue-100: #e0e7ff;
+  --color-blue-200: #c7d2fe;
+  --color-blue-300: #a5b4fc;
+  --color-blue-400: #818cf8;
+  --color-blue-500: #6366f1;
+  --color-blue-600: #4f46e5;
+  --color-blue-700: #4338ca;
+  --color-blue-800: #3730a3;
+  --color-blue-900: #312e81;
+  --color-blue-950: #1e1b4b;
+
+  /* Alerts, errors and success states use the brand too — no other accent colours. */
+  --color-red-50: #eef2ff;
+  --color-red-100: #e0e7ff;
+  --color-red-200: #c7d2fe;
+  --color-red-300: #a5b4fc;
+  --color-red-400: #818cf8;
+  --color-red-500: #6366f1;
+  --color-red-600: #4f46e5;
+  --color-red-700: #4338ca;
+  --color-red-800: #3730a3;
+  --color-red-900: #312e81;
+  --color-red-950: #1e1b4b;
+  --color-emerald-50: #eef2ff;
+  --color-emerald-100: #e0e7ff;
+  --color-emerald-200: #c7d2fe;
+  --color-emerald-300: #a5b4fc;
+  --color-emerald-400: #818cf8;
+  --color-emerald-500: #6366f1;
+  --color-emerald-600: #4f46e5;
+  --color-emerald-700: #4338ca;
+  --color-emerald-800: #3730a3;
+  --color-emerald-900: #312e81;
+  --color-emerald-950: #1e1b4b;
+  --color-amber-50: #eef2ff;
+  --color-amber-100: #e0e7ff;
+  --color-amber-200: #c7d2fe;
+  --color-amber-300: #a5b4fc;
+  --color-amber-400: #818cf8;
+  --color-amber-500: #6366f1;
+  --color-amber-600: #4f46e5;
+  --color-amber-700: #4338ca;
+  --color-amber-800: #3730a3;
+  --color-amber-900: #312e81;
+  --color-amber-950: #1e1b4b;
 }
 
 @theme inline {
@@ -12,15 +66,135 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/*
+ * Dashboard "on the photo" look: containers are transparent over the background image and text is
+ * white. Dialogs are excluded — they keep their own solid light panel.
+ */
+.on-photo {
+  --on-photo-border: rgb(255 255 255 / 0.35);
+  /* Page titles and intro text sit directly on the photo in white. */
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+}
+.on-photo :is(.bg-zinc-50, .bg-zinc-100):not([role="dialog"], [role="dialog"] *) {
+  background-color: transparent;
+}
+.on-photo :is(.text-zinc-900, .text-zinc-800, .text-zinc-700, .text-zinc-600, .text-black):not([role="dialog"] *) {
+  color: #fff;
+}
+.on-photo :is(.text-zinc-500, .text-zinc-400):not([role="dialog"] *) {
+  color: rgb(255 255 255 / 0.85);
+}
+.on-photo :is(.text-blue-600, .text-blue-700, .text-blue-400):not(.bg-blue-50):not([role="dialog"] *) {
+  color: #e0e7ff;
+}
+.on-photo :is(.border-zinc-100, .border-zinc-200, .border-zinc-300):not([role="dialog"], [role="dialog"] *) {
+  border-color: var(--on-photo-border);
+}
+.on-photo :is(.hover\:bg-zinc-50, .hover\:bg-zinc-100):hover:not([role="dialog"] *) {
+  background-color: rgb(255 255 255 / 0.18);
+}
+.on-photo :is(input, select, textarea):not([role="dialog"] *) {
+  background-color: rgb(255 255 255 / 0.15);
+  color: #fff;
+  border-color: var(--on-photo-border);
+}
+.on-photo :is(input, textarea)::placeholder {
+  color: rgb(255 255 255 / 0.7);
+}
+.on-photo option {
+  color: #4f46e5;
+  background-color: #fff;
+}
+.on-photo [role="dialog"] {
+  text-shadow: none;
+}
+
+/* Opt out of the on-photo look: a solid white surface (e.g. the sidebar) with normal dark text. */
+.on-photo .solid-white {
+  background-color: #fff;
+  text-shadow: none;
+}
+.on-photo .solid-white :is(.text-zinc-900, .text-zinc-800, .text-zinc-700, .text-zinc-600, .text-black) {
+  color: #4f46e5;
+}
+.on-photo .solid-white :is(.text-zinc-500, .text-zinc-400) {
+  color: #4f46e5;
+}
+.on-photo .solid-white :is(.text-blue-600, .text-blue-700, .text-blue-400) {
+  color: #4f46e5;
+}
+.on-photo .solid-white :is(.border-zinc-100, .border-zinc-200, .border-zinc-300) {
+  border-color: #e4e4e7;
+}
+.on-photo .solid-white :is(.hover\:bg-zinc-50, .hover\:bg-zinc-100):hover {
+  background-color: #f4f4f5;
+}
+.on-photo .solid-white :is(.bg-zinc-50) {
+  background-color: #fafafa;
+}
+.on-photo .solid-white :is(.bg-zinc-100) {
+  background-color: #f4f4f5;
+}
+.on-photo .solid-white :is(input, select, textarea) {
+  background-color: #fff;
+  color: #4f46e5;
+  border-color: #d4d4d8;
+}
+.on-photo .solid-white :is(input, textarea)::placeholder {
+  color: #a1a1aa;
+}
+
+/* All text is the brand colour on light surfaces; on a brand-coloured or photo surface it is white
+   (the .on-photo rules above win by specificity, and elements that set text-white keep it). */
+:is(.text-zinc-900, .text-zinc-800, .text-zinc-700, .text-zinc-600, .text-zinc-500, .text-zinc-400, .text-black) {
+  color: #4f46e5;
+}
+:is(input, select, textarea) {
+  color: #4f46e5;
+}
+:is(input, textarea)::placeholder {
+  color: #818cf8;
+}
+/* No white halo on text that sits on a brand-coloured surface (it is white text there). */
+.on-photo :is(.bg-blue-600, .bg-blue-600 *, [role="dialog"], [role="dialog"] *) {
+  text-shadow: none;
+}
+
+/* Every icon is the brand colour — except on a brand-coloured surface, where it is white. */
+/* Doubled class forces it over the .on-photo text-colour rules, which would otherwise
+   tint an icon that also carries a text-* class. */
+svg.lucide.lucide {
+  color: #4f46e5 !important;
+}
+.bg-blue-600 svg.lucide.lucide,
+svg.lucide.lucide.text-white {
+  color: #fff !important;
+}
+
+/* A light brand-tinted shadow lifts every white surface off the photo. */
+.on-photo .solid-white {
+  box-shadow: 0 4px 14px rgb(79 70 229 / 0.2);
+}
+
+/* Project and task pages get a deeper shadow under every white surface. */
+.on-photo[data-section="projects"] .solid-white {
+  box-shadow:
+    0 2px 6px rgb(79 70 229 / 0.25),
+    0 12px 32px rgb(79 70 229 / 0.4);
+}
+
+/* Outline buttons: white surface with brand-coloured text, readable on the photo or in a dialog. */
+.btn-outline {
+  background-color: #fff;
+  color: #4f46e5;
+  text-shadow: none;
+}
+.btn-outline:hover:not(:disabled) {
+  background-color: #eef2ff;
 }

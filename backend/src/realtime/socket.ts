@@ -101,6 +101,11 @@ export function initSocketServer(httpServer: HttpServer): void {
  * is a silent no-op rather than a failure that could take down an otherwise-successful write.
  */
 export const realtime = {
+  /** A personal notification (task assigned, task changed, comment…) pushed to all of a user's open sessions. */
+  notification(userId: string, payload: { type: string; title: string; body: string; link: string }): void {
+    io?.to(userRoom(userId)).emit("notification", { ...payload, createdAt: new Date().toISOString() });
+  },
+
   messageCreated(conversationId: string, message: PublicMessage): void {
     io?.to(conversationRoom(conversationId)).emit("message:new", message);
   },

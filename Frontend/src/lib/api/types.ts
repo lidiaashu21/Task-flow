@@ -5,7 +5,6 @@ export interface FetchOptions {
   signal?: AbortSignal;
 }
 
-/** An authenticated request function bound to the current session — see `AuthProvider.fetcher`. */
 export type Fetcher = <T>(path: string, options?: FetchOptions) => Promise<T>;
 
 export interface PaginationMeta {

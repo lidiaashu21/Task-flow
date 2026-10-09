@@ -9,7 +9,6 @@ import {
   getRefreshTokenExpiry,
 } from "../../lib/session.js";
 import {
-  sendVerificationEmail,
   sendPasswordResetEmail,
 } from "../../lib/email.js";
 import { env } from "../../config/env.js";
@@ -24,7 +23,6 @@ import type {
   ForgotPasswordInput,
   LoginInput,
   RegisterInput,
-  ResendVerificationInput,
   ResetPasswordInput,
 } from "./auth.schema.js";
 
@@ -32,12 +30,6 @@ import type {
 function newOpaqueToken() {
   const raw = generateRefreshToken();
   return { raw, hash: hashToken(raw) };
-}
-
-function emailVerificationExpiry(): Date {
-  return new Date(
-    Date.now() + env.EMAIL_VERIFICATION_EXPIRES_IN_HOURS * 60 * 60 * 1000,
-  );
 }
 
 function passwordResetExpiry(): Date {
@@ -77,15 +69,8 @@ export const authService = {
       name: input.name,
       email: input.email,
       passwordHash,
+      emailVerifiedAt: new Date(),
     });
-    4;
-    const { raw, hash } = newOpaqueToken();
-    await authRepository.createEmailVerificationToken(
-      user.id,
-      hash,
-      emailVerificationExpiry(),
-    );
-    await sendVerificationEmail(user.email, raw);
 
     const tokens = await issueTokens(user.id, user.email, req);
     return { user: toPublicUser(user), tokens };
@@ -118,39 +103,6 @@ export const authService = {
 
     const tokens = await issueTokens(user.id, user.email, req);
     return { user: toPublicUser(user), tokens };
-  },
-
-  async verifyEmail(token: string): Promise<PublicUser> {
-    const tokenHash = hashToken(token);
-    const record =
-      await authRepository.findValidEmailVerificationToken(tokenHash);
-    if (!record) {
-      throw new AppError(
-        400,
-        ErrorCode.INVALID_OR_EXPIRED_TOKEN,
-        "This verification link is invalid or has expired",
-      );
-    }
-
-    await authRepository.markEmailVerified(record.userId);
-    await authRepository.consumeEmailVerificationToken(record.id);
-
-    const user = await authRepository.findUserById(record.userId);
-    return toPublicUser(user!);
-  },
-
-  /** Always resolves silently — existence of the email is never revealed to the caller. */
-  async resendVerification(input: ResendVerificationInput): Promise<void> {
-    const user = await authRepository.findUserByEmail(input.email);
-    if (!user || user.emailVerifiedAt) return;
-
-    const { raw, hash } = newOpaqueToken();
-    await authRepository.createEmailVerificationToken(
-      user.id,
-      hash,
-      emailVerificationExpiry(),
-    );
-    await sendVerificationEmail(user.email, raw);
   },
 
   /** Always resolves silently — existence of the email is never revealed to the caller. */

@@ -65,7 +65,7 @@ export function ProjectComments({ projectId }: { projectId: string }) {
   return (
     <Card>
       <CardBody className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
+        <div className="order-2 flex flex-col gap-2 rounded-xl border border-blue-200 bg-white p-4 shadow-sm shadow-[#4F46E5]/10">
           <Textarea
             rows={2}
             placeholder="Write a comment about this project…"
@@ -87,7 +87,7 @@ export function ProjectComments({ projectId }: { projectId: string }) {
         ) : commentsQuery.isError ? (
           <p className="text-sm text-red-600 dark:text-red-400">Couldn&apos;t load comments.</p>
         ) : (
-          <div className="flex flex-col gap-4">
+          <div className="order-1 flex flex-col gap-5">
             {!commentsQuery.data?.comments.length && (
               <p className="text-sm text-zinc-500 dark:text-zinc-400">No comments yet.</p>
             )}
@@ -97,7 +97,7 @@ export function ProjectComments({ projectId }: { projectId: string }) {
               const isEditing = editingId === comment.id;
 
               return (
-                <div key={comment.id} className="flex gap-3">
+                <div key={comment.id} className="flex gap-3 rounded-xl border border-blue-100 bg-blue-50 p-4 shadow-sm shadow-[#4F46E5]/10">
                   <Avatar name={comment.author.name} src={comment.author.avatarUrl} size="sm" />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">

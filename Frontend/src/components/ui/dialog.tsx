@@ -36,7 +36,7 @@ export function Dialog({ open, onClose, title, description, children, className 
       <button
         aria-label="Close dialog"
         onClick={onClose}
-        className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"
+        className="absolute inset-0 bg-[#4F46E5]/30"
       />
       <div
         role="dialog"

@@ -154,7 +154,7 @@ export function ConversationThread({ conversationId, header }: { conversationId:
   }
 
   return (
-    <div className="flex h-[calc(100vh-8.5rem)] flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 md:h-[calc(100vh-6rem)]">
+    <div className="solid-white flex h-[calc(100vh-8.5rem)] flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 md:h-[calc(100vh-6rem)]">
       {header}
 
       <div

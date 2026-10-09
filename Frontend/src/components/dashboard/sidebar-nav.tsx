@@ -1,8 +1,10 @@
 "use client";
 
-import { LayoutDashboard, MessageSquare, FolderKanban } from "lucide-react";
+import { LayoutDashboard, LogOut, MessageSquare, FolderKanban } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useAuth } from "@/lib/auth/auth-context";
 import { cn } from "@/lib/cn";
 
 const items = [
@@ -13,9 +15,18 @@ const items = [
 
 export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { logout } = useAuth();
+
+  async function handleLogout() {
+    onNavigate?.();
+    await logout();
+    router.push("/login");
+    toast.success("You've been signed out");
+  }
 
   return (
-    <nav className="flex flex-col gap-1 px-3">
+    <nav className="flex flex-1 flex-col gap-1 px-3">
       {items.map((item) => {
         const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Icon = item.icon;
@@ -27,7 +38,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
             className={cn(
               "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
               active
-                ? "bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300"
+                ? "bg-blue-600 text-white"
                 : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
             )}
           >
@@ -36,6 +47,15 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
           </Link>
         );
       })}
+
+      {/* Pinned to the bottom of the sidebar */}
+      <button
+        onClick={handleLogout}
+        className="mb-14 mt-auto flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100"
+      >
+        <LogOut className="h-4 w-4" aria-hidden="true" />
+        Sign out
+      </button>
     </nav>
   );
 }

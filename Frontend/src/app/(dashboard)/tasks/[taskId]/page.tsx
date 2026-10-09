@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, History, MessageSquare } from "lucide-react";
 import { use } from "react";
 import { TaskActivityLog } from "@/components/tasks/task-activity-log";
 import { TaskComments } from "@/components/tasks/task-comments";
@@ -54,7 +54,10 @@ export default function TaskDetailPage({ params }: { params: Promise<{ taskId: s
 
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Comments</h2>
+          <h2 className="flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+            <MessageSquare className="h-5 w-5 text-blue-600" aria-hidden="true" />
+            Comments
+          </h2>
         </CardHeader>
         <CardBody>
           <TaskComments taskId={taskId} />
@@ -63,7 +66,10 @@ export default function TaskDetailPage({ params }: { params: Promise<{ taskId: s
 
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Activity</h2>
+          <h2 className="flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+            <History className="h-5 w-5 text-blue-600" aria-hidden="true" />
+            Activity
+          </h2>
         </CardHeader>
         <CardBody>
           <TaskActivityLog taskId={taskId} />

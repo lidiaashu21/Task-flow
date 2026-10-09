@@ -4,7 +4,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 
 export default function MessagesIndexPage() {
   return (
-    <div className="flex h-full items-center justify-center rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="solid-white flex h-full items-center justify-center rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
       <div className="flex flex-col items-center gap-4">
         <Image
           src="/Image/p1.png"

@@ -17,14 +17,6 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
-export const verifyEmailSchema = z.object({
-  token: z.string().min(1, "Token is required"),
-});
-
-export const resendVerificationSchema = z.object({
-  email: emailField,
-});
-
 export const forgotPasswordSchema = z.object({
   email: emailField,
 });
@@ -42,8 +34,6 @@ export const googleCallbackQuerySchema = z.object({
 
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
-export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
-export type ResendVerificationInput = z.infer<typeof resendVerificationSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 export type GoogleCallbackQuery = z.infer<typeof googleCallbackQuerySchema>;

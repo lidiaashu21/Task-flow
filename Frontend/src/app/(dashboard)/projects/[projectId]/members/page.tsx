@@ -132,7 +132,10 @@ export default function ProjectMembersPage({ params }: { params: Promise<{ proje
       {isOwner && (
         <Card>
           <CardHeader>
-            <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Pending invitations</h2>
+            <h2 className="flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+              <Mail className="h-5 w-5 text-blue-600" aria-hidden="true" />
+              Pending invitations
+            </h2>
           </CardHeader>
           <CardBody className="flex flex-col gap-3">
             {!invitationsQuery.data?.invitations.length ? (

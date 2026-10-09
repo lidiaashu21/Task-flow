@@ -27,6 +27,10 @@ jest.unstable_mockModule("../../src/module/task-activity/task-activity.service.j
   taskActivityService: mockTaskActivityService,
 }));
 
+jest.unstable_mockModule("../../src/module/notification/notification.service.js", () => ({
+  notificationService: { actorName: jest.fn(async () => "Ada"), notify: jest.fn(async () => {}) },
+}));
+
 const { taskService } = await import("../../src/module/task/task.service.js");
 
 const creator = { id: "user-1", name: "Ada", avatarUrl: null };

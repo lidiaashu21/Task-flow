@@ -38,13 +38,13 @@ export function UserMenu() {
         aria-haspopup="menu"
         aria-expanded={open}
       >
-        <Avatar name={user.name} src={user.avatarUrl} size="sm" />
+        <Avatar name={user.name} src={user.avatarUrl} size="lg" className="h-11 w-11" />
       </button>
 
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-lg border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-800 dark:bg-zinc-950"
+          className="solid-white absolute right-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-lg border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-800 dark:bg-zinc-950"
         >
           <div className="border-b border-zinc-100 px-3 py-2.5 dark:border-zinc-800">
             <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">{user.name}</p>

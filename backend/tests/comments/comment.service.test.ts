@@ -18,6 +18,10 @@ jest.unstable_mockModule("../../src/module/comment/comment.repository.js", () =>
   commentRepository: mockCommentRepository,
 }));
 
+jest.unstable_mockModule("../../src/module/notification/notification.service.js", () => ({
+  notificationService: { actorName: jest.fn(async () => "Ada"), notify: jest.fn(async () => {}) },
+}));
+
 const { commentService } = await import("../../src/module/comment/comment.service.js");
 
 const author = { id: "user-1", name: "Ada", avatarUrl: null };

@@ -7,7 +7,6 @@ import { CreateTaskDialog } from "@/components/tasks/create-task-dialog";
 import { TaskRow } from "@/components/tasks/task-row";
 import { ProjectTabs } from "@/components/projects/project-tabs";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -101,11 +100,11 @@ export default function ProjectTasksPage({ params }: { params: Promise<{ project
           }
         />
       ) : (
-        <Card className="overflow-hidden py-0">
+        <div className="flex flex-col gap-4">
           {tasksQuery.data.tasks.map((task) => (
-            <TaskRow key={task.id} task={task} />
+            <TaskRow key={task.id} task={task} members={members} />
           ))}
-        </Card>
+        </div>
       )}
 
       <CreateTaskDialog projectId={projectId} members={members} open={createOpen} onClose={() => setCreateOpen(false)} />

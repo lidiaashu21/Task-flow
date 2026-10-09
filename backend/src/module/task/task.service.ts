@@ -1,6 +1,7 @@
 import { taskRepository } from "./task.repository.js";
 import { taskActivityService } from "../task-activity/task-activity.service.js";
 import type { TaskActivityAction } from "../task-activity/task-activity.types.js";
+import { notificationService } from "../notification/notification.service.js";
 import { AppError } from "../../shared/error/app-error.js";
 import { getPagination, buildPaginationMeta, type PaginationMeta } from "../../shared/utils/pagination.js";
 import { toPublicTask, type PublicTask, type TaskDashboard, type TaskStatus } from "./task.types.js";
@@ -102,6 +103,23 @@ export const taskService = {
     const task = await taskRepository.createTask(payload);
     await taskActivityService.record(task.id, creatorId, "created", null, null, task.title);
 
+    const project = await taskRepository.findProjectById(projectId);
+    const creatorName = await notificationService.actorName(creatorId);
+    const link = `/tasks/${task.id}`;
+    await notificationService.notify([task.assigneeId], creatorId, {
+      type: "task_assigned",
+      title: "New task assigned to you",
+      body: `${creatorName} assigned you "${task.title}"`,
+      link,
+    });
+    // The owner hears about new work too, unless they were just told it's theirs.
+    await notificationService.notify([task.assigneeId === project?.ownerId ? null : project?.ownerId], creatorId, {
+      type: "task_updated",
+      title: "New task created",
+      body: `${creatorName} created "${task.title}"`,
+      link,
+    });
+
     const withRelations = await taskRepository.findTaskWithRelations(task.id);
     return toPublicTask(withRelations!);
   },
@@ -154,6 +172,33 @@ export const taskService = {
 
     const updated = await taskRepository.updateTask(taskId, patch);
     await recordTaskChanges(task, patch, userId);
+
+    const project = await taskRepository.findProjectById(task.projectId);
+    const actorName = await notificationService.actorName(userId);
+    const link = `/tasks/${taskId}`;
+    const newlyAssigned = patch.assigneeId !== undefined && patch.assigneeId !== task.assigneeId ? patch.assigneeId : null;
+    await notificationService.notify([newlyAssigned], userId, {
+      type: "task_assigned",
+      title: "New task assigned to you",
+      body: `${actorName} assigned you "${updated!.title}"`,
+      link,
+    });
+
+    const changed = (Object.keys(patch) as Array<keyof NewTask>).filter((key) => {
+      const before = task[key as keyof Task];
+      const after = patch[key];
+      return before instanceof Date || after instanceof Date
+        ? (before as Date | null)?.getTime() !== (after as Date | null | undefined)?.getTime()
+        : before !== after;
+    });
+    if (changed.length > 0) {
+      await notificationService.notify([project?.ownerId, task.assigneeId].filter((id) => id !== newlyAssigned), userId, {
+        type: "task_updated",
+        title: "Task updated",
+        body: `${actorName} changed ${changed.join(", ")} on "${updated!.title}"`,
+        link,
+      });
+    }
     return toPublicTask(updated!);
   },
 

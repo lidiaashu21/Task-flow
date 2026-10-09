@@ -14,9 +14,6 @@ const mockAuthRepository = {
   createUser: jest.fn() as MockOf<typeof authRepository.createUser>,
   markEmailVerified: jest.fn() as MockOf<typeof authRepository.markEmailVerified>,
   updatePassword: jest.fn() as MockOf<typeof authRepository.updatePassword>,
-  createEmailVerificationToken: jest.fn() as MockOf<typeof authRepository.createEmailVerificationToken>,
-  findValidEmailVerificationToken: jest.fn() as MockOf<typeof authRepository.findValidEmailVerificationToken>,
-  consumeEmailVerificationToken: jest.fn() as MockOf<typeof authRepository.consumeEmailVerificationToken>,
   createPasswordResetToken: jest.fn() as MockOf<typeof authRepository.createPasswordResetToken>,
   findValidPasswordResetToken: jest.fn() as MockOf<typeof authRepository.findValidPasswordResetToken>,
   consumePasswordResetToken: jest.fn() as MockOf<typeof authRepository.consumePasswordResetToken>,
@@ -50,7 +47,6 @@ const mockSession = {
 };
 
 const mockEmail = {
-  sendVerificationEmail: jest.fn(async () => {}) as MockOf<typeof emailLib.sendVerificationEmail>,
   sendPasswordResetEmail: jest.fn(async () => {}) as MockOf<typeof emailLib.sendPasswordResetEmail>,
 };
 
@@ -100,7 +96,7 @@ describe("authService", () => {
   });
 
   describe("register", () => {
-    it("creates a user, sends a verification email, and issues tokens", async () => {
+    it("creates an already-verified user and issues tokens", async () => {
       mockAuthRepository.findUserByEmail.mockResolvedValue(undefined);
       mockAuthRepository.createUser.mockResolvedValue(fakeUser());
 
@@ -113,8 +109,8 @@ describe("authService", () => {
         name: "Ada Lovelace",
         email: "ada@example.com",
         passwordHash: "hashed:supersecret",
+        emailVerifiedAt: expect.any(Date),
       });
-      expect(mockEmail.sendVerificationEmail).toHaveBeenCalledWith("ada@example.com", "raw-refresh-token");
       expect(result.user.email).toBe("ada@example.com");
       expect(result.tokens.accessToken).toBe("signed-access-token");
     });
@@ -163,54 +159,6 @@ describe("authService", () => {
       await expect(
         authService.login({ email: "ada@example.com", password: "wrong" } as never, fakeReq())
       ).rejects.toMatchObject({ statusCode: 401, code: ErrorCode.INVALID_CREDENTIALS });
-    });
-  });
-
-  describe("verifyEmail", () => {
-    it("marks the token owner verified", async () => {
-      mockAuthRepository.findValidEmailVerificationToken.mockResolvedValue({ id: "tok-1", userId: "user-1" });
-      mockAuthRepository.findUserById.mockResolvedValue(fakeUser({ emailVerifiedAt: new Date() }));
-
-      const result = await authService.verifyEmail("raw-token");
-
-      expect(mockAuthRepository.markEmailVerified).toHaveBeenCalledWith("user-1");
-      expect(mockAuthRepository.consumeEmailVerificationToken).toHaveBeenCalledWith("tok-1");
-      expect(result.emailVerified).toBe(true);
-    });
-
-    it("rejects an invalid or expired token", async () => {
-      mockAuthRepository.findValidEmailVerificationToken.mockResolvedValue(undefined);
-
-      await expect(authService.verifyEmail("bad-token")).rejects.toMatchObject({
-        statusCode: 400,
-        code: ErrorCode.INVALID_OR_EXPIRED_TOKEN,
-      });
-    });
-  });
-
-  describe("resendVerification", () => {
-    it("does nothing for an unknown email", async () => {
-      mockAuthRepository.findUserByEmail.mockResolvedValue(undefined);
-
-      await authService.resendVerification({ email: "nobody@example.com" } as never);
-
-      expect(mockEmail.sendVerificationEmail).not.toHaveBeenCalled();
-    });
-
-    it("does nothing when the email is already verified", async () => {
-      mockAuthRepository.findUserByEmail.mockResolvedValue(fakeUser({ emailVerifiedAt: new Date() }));
-
-      await authService.resendVerification({ email: "ada@example.com" } as never);
-
-      expect(mockEmail.sendVerificationEmail).not.toHaveBeenCalled();
-    });
-
-    it("sends a new token for an unverified account", async () => {
-      mockAuthRepository.findUserByEmail.mockResolvedValue(fakeUser());
-
-      await authService.resendVerification({ email: "ada@example.com" } as never);
-
-      expect(mockEmail.sendVerificationEmail).toHaveBeenCalledWith("ada@example.com", "raw-refresh-token");
     });
   });
 

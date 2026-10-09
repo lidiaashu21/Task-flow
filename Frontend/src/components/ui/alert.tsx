@@ -10,16 +10,15 @@ interface AlertProps {
 
 const variantStyles = {
   info: {
-    wrapper: "border-blue-200 bg-blue-50 text-blue-900 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-200",
+    wrapper: "border-blue-600 bg-blue-600 text-white",
     icon: Info,
   },
   success: {
-    wrapper:
-      "border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200",
+    wrapper: "border-blue-600 bg-blue-600 text-white",
     icon: CheckCircle2,
   },
   error: {
-    wrapper: "border-red-200 bg-red-50 text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-200",
+    wrapper: "border-blue-600 bg-blue-600 text-white",
     icon: AlertTriangle,
   },
 } as const;

@@ -32,6 +32,10 @@ async function start(): Promise<void> {
       process.exit(1);
     });
   } catch (error) {
+    console.error("❌ Failed to start TaskFlow server");
+    console.error("Error:", error);
+    console.error("Stack:", error instanceof Error ? error.stack : "No stack");
+
     logger.error("Failed to start TaskFlow server", {
       error: error instanceof Error ? error.message : String(error),
     });

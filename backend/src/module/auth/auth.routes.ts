@@ -8,9 +8,7 @@ import {
   googleCallbackQuerySchema,
   loginSchema,
   registerSchema,
-  resendVerificationSchema,
   resetPasswordSchema,
-  verifyEmailSchema,
 } from "./auth.schema.js";
 
 const router = Router();
@@ -20,14 +18,6 @@ router.post("/login", authRateLimiter, validate(loginSchema), authController.log
 router.post("/refresh", authController.refresh);
 router.post("/logout", authController.logout);
 router.get("/me", requireAuth, authController.me);
-
-router.get("/verify-email", validate(verifyEmailSchema, "query"), authController.verifyEmail);
-router.post(
-  "/resend-verification",
-  authRateLimiter,
-  validate(resendVerificationSchema),
-  authController.resendVerification
-);
 
 router.post("/forgot-password", authRateLimiter, validate(forgotPasswordSchema), authController.forgotPassword);
 router.post("/reset-password", authRateLimiter, validate(resetPasswordSchema), authController.resetPassword);

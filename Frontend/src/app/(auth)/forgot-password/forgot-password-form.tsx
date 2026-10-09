@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,7 +12,10 @@ import { Input } from "@/components/ui/input";
 import { ApiError } from "@/lib/api/error";
 import { forgotPassword } from "@/lib/auth/api";
 import { applyFieldErrors } from "@/lib/auth/apply-field-errors";
-import { type ForgotPasswordFormValues, forgotPasswordFormSchema } from "@/lib/auth/schemas";
+import {
+  type ForgotPasswordFormValues,
+  forgotPasswordFormSchema,
+} from "@/lib/auth/schemas";
 
 export function ForgotPasswordForm() {
   const [sentTo, setSentTo] = useState<string | null>(null);
@@ -23,7 +25,9 @@ export function ForgotPasswordForm() {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<ForgotPasswordFormValues>({ resolver: zodResolver(forgotPasswordFormSchema) });
+  } = useForm<ForgotPasswordFormValues>({
+    resolver: zodResolver(forgotPasswordFormSchema),
+  });
 
   async function onSubmit(values: ForgotPasswordFormValues) {
     try {
@@ -44,14 +48,17 @@ export function ForgotPasswordForm() {
       <AuthCard
         title="Check your email"
         footer={
-          <Link href="/login" className="font-medium text-blue-600 hover:underline dark:text-blue-400">
+          <Link
+            href="/login"
+            className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+          >
             Back to sign in
           </Link>
         }
       >
         <Alert variant="success">
-          If an account exists for <strong>{sentTo}</strong>, we&apos;ve sent a link to reset your password. The
-          link expires in 30 minutes.
+          If an account exists for <strong>{sentTo}</strong>, we&apos;ve sent a
+          link to reset your password. The link expires in 30 minutes.
         </Alert>
       </AuthCard>
     );
@@ -62,12 +69,19 @@ export function ForgotPasswordForm() {
       title="Forgot your password?"
       description="Enter your email and we'll send you a link to reset it"
       footer={
-        <Link href="/login" className="font-medium text-blue-600 hover:underline dark:text-blue-400">
+        <Link
+          href="/login"
+          className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+        >
           Back to sign in
         </Link>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        className="flex flex-col gap-4"
+      >
         <Field id="email" label="Email" error={errors.email?.message}>
           <Input
             id="email"
