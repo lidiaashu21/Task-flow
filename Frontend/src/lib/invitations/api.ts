@@ -1,12 +1,10 @@
 import type { Fetcher, PaginationMeta } from "../api/types";
+import { API_BASE_URL } from "../config";
 import type {
   InvitationPreview,
   InvitationStatus,
   PublicInvitation,
 } from "./types";
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
 
 /**
  * List project invitations.
