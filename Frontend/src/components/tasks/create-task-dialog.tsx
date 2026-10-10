@@ -84,7 +84,7 @@ export function CreateTaskDialog({
           <Textarea id="task-description" rows={3} invalid={!!errors.description} {...register("description")} />
         </Field>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field id="task-status" label="Status">
             <Select id="task-status" {...register("status")}>
               {(["todo", "in_progress", "done"] as const).map((status) => (
@@ -106,7 +106,7 @@ export function CreateTaskDialog({
           </Field>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field id="task-due-date" label="Due date" error={errors.dueDate?.message}>
             <Input id="task-due-date" type="date" invalid={!!errors.dueDate} {...register("dueDate")} />
           </Field>

@@ -14,7 +14,7 @@ export function ProjectTabs({ projectId }: { projectId: string }) {
   ];
 
   return (
-    <div className="flex gap-1 border-b border-zinc-200 dark:border-zinc-800">
+    <div className="flex gap-1 overflow-x-auto whitespace-nowrap border-b border-zinc-200 dark:border-zinc-800">
       {tabs.map((tab) => {
         const active = pathname === tab.href;
         return (

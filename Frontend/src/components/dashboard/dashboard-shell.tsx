@@ -28,7 +28,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
       {/* Fixed background image — sits behind the whole shell; foreground surfaces below are
           transparent containers sit directly on it with white text. */}
       <div className="fixed inset-0 -z-10">
-        <Image key={backgroundFor(pathname)} src={backgroundFor(pathname)} alt="" fill priority sizes="100vw" className="object-cover" />
+        <Image key={backgroundFor(pathname)} src={backgroundFor(pathname)} alt="" fill priority sizes="100vw" className="object-cover object-center" />
         {/* A light brand-coloured haze with a slight blur over the photo. */}
         <div className="absolute inset-0 bg-[#4F46E5]/10 backdrop-blur-[2px]" />
       </div>
@@ -70,7 +70,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="solid-white flex h-14 items-center justify-between border-b border-zinc-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-950/70 md:px-6">
+        <header className="solid-white flex h-14 items-center justify-between border-b border-zinc-200 bg-white px-3 sm:px-4 dark:border-zinc-800 dark:bg-zinc-950/70 md:px-6">
           <button
             className="rounded-md p-1.5 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 md:hidden"
             onClick={() => setMobileOpen(true)}

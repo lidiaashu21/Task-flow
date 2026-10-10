@@ -128,9 +128,9 @@ function NotificationBellInner({ userId }: { userId: string }) {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={unread > 0 ? `Notifications (${unread} unread)` : "Notifications"}
-        className="relative rounded-md p-2.5 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+        className="relative rounded-md p-2 text-zinc-600 sm:p-2.5 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
       >
-        <Bell className="h-7 w-7" />
+        <Bell className="h-6 w-6 sm:h-7 sm:w-7" />
         {unread > 0 && (
           <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold text-white">
             {unread > 9 ? "9+" : unread}
@@ -139,7 +139,7 @@ function NotificationBellInner({ userId }: { userId: string }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-80 max-w-[90vw] rounded-lg border border-zinc-200 solid-white bg-white shadow-lg">
+        <div className="absolute right-0 z-50 mt-2 w-80 max-w-[calc(100vw-1.5rem)] rounded-lg border border-zinc-200 solid-white bg-white shadow-lg">
           <div className="flex items-center justify-between border-b border-zinc-200 px-3 py-2 dark:border-zinc-800">
             <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Notifications</span>
             {unread > 0 && (

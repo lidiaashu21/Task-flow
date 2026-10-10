@@ -50,7 +50,7 @@ export function MessageBubble({ message, isOwn, showSender, onEdit, onDelete }: 
         )}
 
         {editing ? (
-          <div className="flex w-64 flex-col gap-2">
+          <div className="flex w-full max-w-64 flex-col gap-2">
             <Textarea rows={2} value={draft} onChange={(event) => setDraft(event.target.value)} autoFocus />
             <div className="flex justify-end gap-2 text-xs">
               <button onClick={() => setEditing(false)} className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">

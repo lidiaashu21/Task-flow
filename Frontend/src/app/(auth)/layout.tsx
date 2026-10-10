@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 /** A bright photo fills the whole screen behind the form; the form card floats above it. */
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="relative flex flex-1 flex-col items-center justify-center px-4 py-12">
+    <div className="relative flex flex-1 flex-col items-center justify-center px-4 py-8 sm:py-12">
       <div className="fixed inset-0 -z-10">
         <Image
           src={encodeURI("/Login page/Screenshot 2026-10-07 021910.png")}
@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-[#4F46E5]/25 backdrop-blur-[2px]" />
       </div>

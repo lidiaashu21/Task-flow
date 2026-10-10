@@ -109,7 +109,7 @@ export default function ProjectOverviewPage({ params }: { params: Promise<{ proj
 
       <ProjectTabs projectId={projectId} />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardBody>
             <p className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">

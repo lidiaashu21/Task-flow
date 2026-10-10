@@ -38,7 +38,7 @@ export function UserMenu() {
         aria-haspopup="menu"
         aria-expanded={open}
       >
-        <Avatar name={user.name} src={user.avatarUrl} size="lg" className="h-11 w-11" />
+        <Avatar name={user.name} src={user.avatarUrl} size="lg" className="h-9 w-9 sm:h-11 sm:w-11" />
       </button>
 
       {open && (

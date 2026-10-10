@@ -52,7 +52,7 @@ export default function ProjectTasksPage({ params }: { params: Promise<{ project
       <div className="flex flex-wrap gap-3">
         <Input
           placeholder="Search tasks…"
-          className="max-w-xs"
+          className="w-full sm:max-w-xs"
           value={filters.search ?? ""}
           onChange={(event) => setFilters((current) => ({ ...current, search: event.target.value }))}
         />

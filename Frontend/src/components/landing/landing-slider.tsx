@@ -33,7 +33,7 @@ export function LandingSlider() {
 
   return (
     <div
-      className="relative h-dvh w-full overflow-hidden bg-[#4F46E5]"
+      className="relative h-dvh min-h-[28rem] w-full overflow-hidden bg-[#4F46E5]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -55,17 +55,17 @@ export function LandingSlider() {
               fill
               priority={i === 0}
               sizes="100vw"
-              className="object-cover"
+              className="object-cover object-center"
             />
             <div className="absolute inset-0 bg-[#4F46E5]/35 backdrop-blur-[2px]" />
-            <div className="relative flex h-full flex-col items-center justify-center px-6 pb-48 text-center">
-              <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-5xl">{slide.text}</h1>
+            <div className="relative flex h-full flex-col items-center justify-center px-5 pb-40 text-center sm:px-6 sm:pb-48">
+              <h1 className="max-w-3xl text-2xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl">{slide.text}</h1>
             </div>
           </div>
         ))}
       </div>
 
-      <Link href="/" className="absolute left-6 top-6 flex items-center gap-2">
+      <Link href="/" className="absolute left-4 top-4 flex sm:left-6 sm:top-6 items-center gap-2">
         <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#4F46E5] text-base font-bold text-white">
           T
         </span>
@@ -74,7 +74,7 @@ export function LandingSlider() {
 
       <Link
         href="/login"
-        className="absolute left-1/2 top-[56%] -translate-x-1/2 rounded-xl bg-[#4F46E5] px-14 py-4 text-lg font-semibold text-white shadow-lg transition-colors hover:bg-[#4338CA] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="absolute left-1/2 top-[56%] -translate-x-1/2 rounded-xl bg-[#4F46E5] px-10 py-3 text-base font-semibold sm:px-14 sm:py-4 sm:text-lg text-white shadow-lg transition-colors hover:bg-[#4338CA] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       >
         Get Started
       </Link>

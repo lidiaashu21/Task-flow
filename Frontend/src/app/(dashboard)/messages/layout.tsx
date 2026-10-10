@@ -11,7 +11,7 @@ export default function MessagesLayout({ children }: { children: ReactNode }) {
   const activeId = pathname.split("/").pop();
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-6rem)] max-w-6xl gap-4">
+    <div className="mx-auto flex h-[calc(100dvh-9rem)] md:h-[calc(100dvh-6rem)] max-w-6xl gap-4">
       <div className={cn("w-full shrink-0 md:w-80", !isListOnly && "hidden md:block")}>
         <ConversationListPane activeId={isListOnly ? undefined : activeId} />
       </div>

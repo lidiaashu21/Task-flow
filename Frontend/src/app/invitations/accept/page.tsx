@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AcceptInvitationPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 px-4 py-12 dark:bg-black">
+    <div className="flex min-h-dvh flex-col items-center justify-center bg-zinc-50 px-4 py-12 dark:bg-black">
       <Link href="/" className="mb-8 flex items-center gap-2">
         <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-base font-bold text-white">
           T

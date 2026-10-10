@@ -44,7 +44,7 @@ export function TaskRow({ task, members }: { task: PublicTask; members: ProjectM
     <div className="solid-white flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white px-5 py-4 text-sm">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <Link href={`/tasks/${task.id}`} className="text-base font-semibold text-zinc-900 hover:underline">
+          <Link href={`/tasks/${task.id}`} className="break-words text-base font-semibold text-zinc-900 hover:underline">
             {task.title}
           </Link>
           {task.description && <p className="mt-1 line-clamp-2 text-zinc-500">{task.description}</p>}

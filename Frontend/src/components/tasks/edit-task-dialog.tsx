@@ -88,7 +88,7 @@ export function EditTaskDialog({ task, members, open, onClose }: EditTaskDialogP
           <Textarea id={`edit-description-${task.id}`} rows={3} invalid={!!errors.description} {...register("description")} />
         </Field>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field id={`edit-status-${task.id}`} label="Status">
             <Select id={`edit-status-${task.id}`} {...register("status")}>
               {(["todo", "in_progress", "done"] as const).map((status) => (
@@ -110,7 +110,7 @@ export function EditTaskDialog({ task, members, open, onClose }: EditTaskDialogP
           </Field>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field id={`edit-due-${task.id}`} label="Due date">
             <Input id={`edit-due-${task.id}`} type="date" {...register("dueDate")} />
           </Field>
