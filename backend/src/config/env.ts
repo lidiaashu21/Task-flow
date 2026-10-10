@@ -14,7 +14,12 @@ const envSchema = z.object({
   JWT_ACCESS_EXPIRES_IN: z.string().default("15m"),
   REFRESH_TOKEN_EXPIRES_IN_DAYS: z.coerce.number().int().positive().default(30),
 
-  FRONTEND_URL: z.string().url().default("http://localhost:3000"),
+  FRONTEND_URL: z
+    .string()
+    .url()
+    .default("http://localhost:3000")
+    // A trailing slash would break the CORS origin match and produce "//login" redirect links.
+    .transform((value) => value.replace(/\/+$/, "")),
 
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
