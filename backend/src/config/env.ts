@@ -14,6 +14,12 @@ const envSchema = z.object({
   JWT_ACCESS_EXPIRES_IN: z.string().default("15m"),
   REFRESH_TOKEN_EXPIRES_IN_DAYS: z.coerce.number().int().positive().default(30),
 
+  BACKEND_URL: z
+    .string()
+    .url()
+    .optional()
+    .transform((value) => (value ? value.replace(/\/+$/, "") : undefined)),
+
   FRONTEND_URL: z
     .string()
     .url()
@@ -23,7 +29,11 @@ const envSchema = z.object({
 
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
-  GOOGLE_REDIRECT_URI: z.string().url().optional(),
+  GOOGLE_REDIRECT_URI: z
+    .string()
+    .url()
+    .optional()
+    .transform((value) => (value ? value.replace(/\/+$/, "") : undefined)),
 
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: z.coerce.number().int().positive().optional(),

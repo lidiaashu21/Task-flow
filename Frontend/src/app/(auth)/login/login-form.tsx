@@ -16,6 +16,7 @@ import { ApiError } from "@/lib/api/error";
 import { login } from "@/lib/auth/api";
 import { applyFieldErrors } from "@/lib/auth/apply-field-errors";
 import { saveAccessToken } from "@/lib/auth/session";
+import { useAuth } from "@/lib/auth/auth-context";
 import { type LoginFormValues, loginFormSchema } from "@/lib/auth/schemas";
 
 export function LoginForm() {
@@ -24,6 +25,7 @@ export function LoginForm() {
   const oauthFailed = searchParams.get("error") === "google_oauth_failed";
   const next = searchParams.get("next");
   const prefillEmail = searchParams.get("email") ?? undefined;
+  const { setSession } = useAuth();
 
   const registerParams = new URLSearchParams();
   if (next) registerParams.set("next", next);
@@ -44,8 +46,9 @@ export function LoginForm() {
     try {
       const session = await login(values);
       saveAccessToken(session.accessToken);
+      setSession(session);
       toast.success(`Welcome back, ${session.user.name.split(" ")[0]}!`);
-      router.push(next ?? "/");
+      router.push(next ?? "/dashboard");
       router.refresh();
     } catch (error) {
       if (error instanceof ApiError) {

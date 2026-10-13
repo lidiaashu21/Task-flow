@@ -7,9 +7,9 @@ const emailField = z
   .pipe(z.email("Enter a valid email address"));
 
 export const registerSchema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters").max(255),
+  name: z.string().trim().min(1, "Name is required").max(255),
   email: emailField,
-  password: z.string().min(8, "Password must be at least 8 characters").max(72),
+  password: z.string().min(6, "Password must be at least 6 characters").max(72),
 });
 
 export const loginSchema = z.object({
@@ -23,7 +23,7 @@ export const forgotPasswordSchema = z.object({
 
 export const resetPasswordSchema = z.object({
   token: z.string().min(1, "Token is required"),
-  password: z.string().min(8, "Password must be at least 8 characters").max(72),
+  password: z.string().min(6, "Password must be at least 6 characters").max(72),
 });
 
 export const googleCallbackQuerySchema = z.object({

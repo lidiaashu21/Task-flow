@@ -2,7 +2,7 @@ import { z } from "zod";
 
 /** Mirrors `module/auth/auth.schema.ts` on the backend, field for field. */
 const emailField = z.string().trim().toLowerCase().pipe(z.email("Enter a valid email address"));
-const passwordField = z.string().min(8, "Password must be at least 8 characters").max(72);
+const passwordField = z.string().min(6, "Password must be at least 6 characters").max(72);
 
 export const loginFormSchema = z.object({
   email: emailField,
@@ -12,7 +12,7 @@ export type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export const registerFormSchema = z
   .object({
-    name: z.string().trim().min(2, "Name must be at least 2 characters").max(255),
+    name: z.string().trim().min(1, "Name is required").max(255),
     email: emailField,
     password: passwordField,
     confirmPassword: z.string().min(1, "Please confirm your password"),

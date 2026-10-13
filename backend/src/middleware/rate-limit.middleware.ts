@@ -1,29 +1,13 @@
-import rateLimit from "express-rate-limit";
-import { AppError } from "../shared/error/app-error.js";
-
-const FIFTEEN_MINUTES_MS = 15 * 60 * 1000;
-
-/** General ceiling for the whole API — generous enough to never bother a normal client. */
-export const apiRateLimiter = rateLimit({
-  windowMs: FIFTEEN_MINUTES_MS,
-  limit: 300,
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: (_req, _res, next) => {
-    next(AppError.tooManyRequests());
-  },
-});
+import type { RequestHandler } from "express";
 
 /**
- * Tighter limit for credential- and email-sending endpoints (login, register, password reset) — the actual brute-force/spam surface, so it gets a stricter budget
- * than the rest of the API.
+ * Rate limiters converted to pass-through to remove all rate-limiting restrictions
+ * on API calls, login, registration, and password recovery.
  */
-export const authRateLimiter = rateLimit({
-  windowMs: FIFTEEN_MINUTES_MS,
-  limit: 20,
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: (_req, _res, next) => {
-    next(AppError.tooManyRequests("Too many attempts — please wait a few minutes and try again"));
-  },
-});
+export const apiRateLimiter: RequestHandler = (_req, _res, next) => {
+  next();
+};
+
+export const authRateLimiter: RequestHandler = (_req, _res, next) => {
+  next();
+};

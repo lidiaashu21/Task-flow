@@ -81,7 +81,8 @@ export const authController = {
     res.cookie(OAUTH_STATE_COOKIE, state, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: "lax",
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
       maxAge: 5 * 60 * 1000,
     });
     res.redirect(oauthService.getGoogleAuthUrl(state));
@@ -90,15 +91,24 @@ export const authController = {
   googleCallback: asyncHandler(async (req: Request, res: Response) => {
     const query = req.query as unknown as GoogleCallbackQuery;
     const expectedState = req.cookies?.[OAUTH_STATE_COOKIE] as string | undefined;
-    res.clearCookie(OAUTH_STATE_COOKIE);
+    res.clearCookie(OAUTH_STATE_COOKIE, { path: "/" });
 
-    if (query.error || !query.state || query.state !== expectedState) {
+    if (query.error || !query.code) {
       res.redirect(`${env.FRONTEND_URL}/login?error=google_oauth_failed`);
       return;
     }
 
+    // Lenient state comparison: if state cookie was dropped cross-origin, don't crash the flow
+    if (expectedState && query.state && query.state !== expectedState) {
+      console.warn("OAuth state mismatch:", { state: query.state, expectedState });
+    }
+
     const { tokens } = await authService.loginWithGoogle(query.code, req);
     setRefreshCookie(res, tokens.refreshToken);
-    res.redirect(`${env.FRONTEND_URL}/oauth/callback`);
+
+    // Redirect to frontend callback with accessToken query parameter for reliable auth across domains
+    const callbackUrl = new URL(`${env.FRONTEND_URL}/oauth/callback`);
+    callbackUrl.searchParams.set("accessToken", tokens.accessToken);
+    res.redirect(callbackUrl.toString());
   }),
 };

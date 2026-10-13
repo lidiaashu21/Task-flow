@@ -16,12 +16,14 @@ import { register as registerAccount } from "@/lib/auth/api";
 import { applyFieldErrors } from "@/lib/auth/apply-field-errors";
 import { type RegisterFormValues, registerFormSchema } from "@/lib/auth/schemas";
 import { saveAccessToken } from "@/lib/auth/session";
+import { useAuth } from "@/lib/auth/auth-context";
 
 export function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next");
   const prefillEmail = searchParams.get("email") ?? undefined;
+  const { setSession } = useAuth();
 
   const loginParams = new URLSearchParams();
   if (next) loginParams.set("next", next);
@@ -42,8 +44,9 @@ export function RegisterForm() {
     try {
       const session = await registerAccount({ name: values.name, email: values.email, password: values.password });
       saveAccessToken(session.accessToken);
+      setSession(session);
       toast.success("Account created! You're signed in.");
-      router.push(next ?? "/");
+      router.push(next ?? "/dashboard");
     } catch (error) {
       if (error instanceof ApiError) {
         const handled = applyFieldErrors(error, setError);

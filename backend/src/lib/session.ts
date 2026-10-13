@@ -19,11 +19,12 @@ export function getRefreshTokenExpiry(): Date {
 }
 
 export function refreshCookieOptions(): CookieOptions {
+  const isProd = isProduction || process.env.NODE_ENV === "production";
   return {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: "lax",
-    path: "/api/auth",
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
+    path: "/",
     maxAge: env.REFRESH_TOKEN_EXPIRES_IN_DAYS * 24 * 60 * 60 * 1000,
   };
 }

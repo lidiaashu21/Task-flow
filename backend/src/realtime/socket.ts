@@ -3,6 +3,7 @@ import { Server, type Socket } from "socket.io";
 import { verifyAccessToken } from "../lib/jwt.js";
 import { logger } from "../lib/logger.js";
 import { env } from "../config/env.js";
+import { corsOptions } from "../config/cors.js";
 import { conversationRepository } from "../module/conversation/conversation.repository.js";
 import type { PublicMessage } from "../module/conversation/conversation.types.js";
 
@@ -27,7 +28,7 @@ export function conversationRoom(conversationId: string): string {
  */
 export function initSocketServer(httpServer: HttpServer): void {
   io = new Server(httpServer, {
-    cors: { origin: env.FRONTEND_URL, credentials: true },
+    cors: corsOptions,
   });
 
   io.use((socket, next) => {
